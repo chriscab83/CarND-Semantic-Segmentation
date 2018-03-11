@@ -61,6 +61,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         num_classes, 
         1, 
         padding='same',
+        kernel_initializer=tf.random_normal_initializer(stddev=0.01),
         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     upsample_1 = tf.layers.conv2d_transpose(
@@ -69,6 +70,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         4, 
         strides=(2,2), 
         padding='same',
+        kernel_initializer=tf.random_normal_initializer(stddev=0.01),
         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
                             
     conv_1x1_4 = tf.layers.conv2d(
@@ -76,6 +78,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         num_classes, 
         1, 
         padding='same',
+        kernel_initializer=tf.random_normal_initializer(stddev=0.01),
         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     skip_1 = tf.add(upsample_1, conv_1x1_4)
@@ -86,6 +89,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         4, 
         strides=(2,2), 
         padding='same',
+        kernel_initializer=tf.random_normal_initializer(stddev=0.01),
         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     conv_1x1_3 = tf.layers.conv2d(
@@ -93,6 +97,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         num_classes,
         1,
         padding='same',
+        kernel_initializer=tf.random_normal_initializer(stddev=0.01),
         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     skip_2 = tf.add(upsample_2, conv_1x1_3)
@@ -103,6 +108,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         16,
         strides=(8,8),
         padding='same',
+        kernel_initializer=tf.random_normal_initializer(stddev=0.01),
         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     return upsample_3
@@ -194,8 +200,8 @@ def run():
 
         # TODO: Build NN using load_vgg, layers, and optimize function
 
-        epochs = 50
-        batch_size = 5
+        epochs = 30
+        batch_size = 10
 
         correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes], name='correct_label')
         learning_rate = tf.placeholder(tf.float32, name='learning_rate')
